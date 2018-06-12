@@ -27,7 +27,11 @@ app.get('/urls',function(req , res){
 
 //POST method for urls
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // debug statement to see POST parameters
+  var shortURL = generateRandomString();
+  urlDatabase[shortURL] = req.body['longURL']
+  console.log(urlDatabase)
+
+  //console.log(req.body);  // debug statement to see POST parameters
   res.send("Ok");         // Respond with 'Ok' (we will replace this)
 });
 
@@ -44,13 +48,22 @@ app.get("/urls/:id", (req, res) => {
                         longURL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });
+app.get("/u/:shortURL", (req, res) => {
+  let longURL = urlDatabase[req.params.shortURL]
+  res.redirect(longURL);
+});
 
 
+//A function for returning a random ID
+function generateRandomString() {
+  var id = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+  for (var i = 0; i < 6; i++)
+    id += possible.charAt(Math.floor(Math.random() * possible.length));
 
-
-
-
-
+  return id;
+}
+//make sure you are listening
 app.listen(8080);
 console.log('8080 is the magic port');
