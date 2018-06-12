@@ -35,6 +35,17 @@ app.post("/urls", (req, res) => {
   res.send("Ok");         // Respond with 'Ok' (we will replace this)
 });
 
+//POST method to delete a post
+app.post("/urls/:id/delete", (req, res) => {
+  var deleteURL = req.params.id
+  delete urlDatabase[deleteURL]
+  console.log(urlDatabase)
+  res.redirect('/urls')
+
+});
+
+
+
 
 //get method for urls/new
 app.get("/urls/new", (req, res) => {
@@ -48,6 +59,8 @@ app.get("/urls/:id", (req, res) => {
                         longURL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });
+
+
 app.get("/u/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL]
   res.redirect(longURL);

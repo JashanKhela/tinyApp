@@ -5,11 +5,13 @@
 
   </header>
 
-    <% for (var key in urls) { %>
-   <li> Long URLs : <%= urls[key] %>  </li>
-    <li> Short URLs : <%= key %> </li>
+<form method="POST" action="/urls/<% key %>/delete">
+  <% for (var key in urls) { %>
+   <li> Long URLs : <%= urls[key] %> Short URLs : <%= key %> <button>Delete</button></li>
 
-    <% } %>
+
+    <% } %></form>
+
     <li><a href="">Do you want to shorten your URL? Click me</a></li>
 
 
