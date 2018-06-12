@@ -1,0 +1,20 @@
+<html lang="en">
+<% include ./partials/_header %>
+<body>
+  <header>
+
+  </header>
+
+    <% for (var key in urls) { %>
+   <li> Long URLs : <%= urls[key] %>  </li>
+    <li> Short URLs : <%= key %> </li>
+
+    <% } %>
+    <li><a href="">Do you want to shorten your URL? Click me</a></li>
+
+
+
+
+
+</body>
+</html>
