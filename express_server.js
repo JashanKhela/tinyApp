@@ -52,8 +52,11 @@ app.post("/urls/:id/delete", (req, res) => {
 
 //After you submit a new URL, get redirected back to home page
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
-  res.redirect('/urls')
+
+  let templateVars = { shortURL: req.params.id,
+                        longURL: urlDatabase[req.params.id],
+                        username: req.cookies["username"],};
+  res.render("urls_new", templateVars);
 });
 
 
