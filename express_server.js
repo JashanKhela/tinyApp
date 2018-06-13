@@ -1,9 +1,6 @@
-var express = require('express');
-
-var app = express();
-
-var PORT = 8080;
-
+const express = require('express');
+const app = express();
+const PORT = 8080;
 app.set('view engine', 'ejs');
 
 //require your body parser
@@ -12,7 +9,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 
-var urlDatabase = {
+const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
@@ -25,19 +22,21 @@ app.get('/urls',function(req , res){
     res.render('urls_index' , templateVars )
 });
 
-//POST method for urls
+//POST method WITH A NEW RANDOM STRING
 app.post("/urls", (req, res) => {
-  var shortURL = generateRandomString();
+  let shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body['longURL']
   console.log(urlDatabase)
 
   //console.log(req.body);  // debug statement to see POST parameters
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  res.redirect('/urls')
+  //This redirect allows the app to redirect back to home page
 });
+
 
 //POST method to delete a post
 app.post("/urls/:id/delete", (req, res) => {
-  var deleteURL = req.params.id
+  let deleteURL = req.params.id
   delete urlDatabase[deleteURL]
   console.log(urlDatabase)
   res.redirect('/urls')
@@ -47,9 +46,9 @@ app.post("/urls/:id/delete", (req, res) => {
 
 
 
-//get method for urls/new
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
+  res.redirect('/urls')
 });
 
 
@@ -77,6 +76,32 @@ function generateRandomString() {
 
   return id;
 }
+
+//GET method to show previous values on your update page
+app.get("/urls/:id/", (req , res) => {
+    let templateVars = {
+        shortURL: req.params.id,
+        longURL: urlDatabase[req.params.id]
+    };
+
+    res.render("urls_show", templateVars)
+
+})
+
+
+
+
+app.post("/urls/:id/", (req , res) => {
+    console.log(req.params.id)
+
+    urlDatabase[req.params.id] = req.body.longURL
+    console.log(urlDatabase)
+
+    res.redirect('/urls')
+
+})
+
+
 //make sure you are listening
 app.listen(8080);
 console.log('8080 is the magic port');

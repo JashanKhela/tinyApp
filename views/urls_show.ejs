@@ -2,13 +2,19 @@
 <% include ./partials/_header %>
 
 <body>
-  <header>
-      </header>
-  <p>
-Short URL : <%= shortURL  %> </p>
-<p>
-Long URL : <%= longURL  %> </p>
 
+
+
+<form action="/urls/<%= shortURL%>/" method="POST" style="margin:150px;">
+<h1>
+  <label for="longURL" ">ShortURL : <%=shortURL %> </label>
+</h1>
+
+      <input id="longURL" type="text" name="longURL" value="<%= longURL %>" placeholder="http://" style="width: 300px">
+
+      <input type="submit" value="Update">
+
+    </form>
 
 </body>
 </html>

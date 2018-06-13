@@ -2,20 +2,31 @@
 <% include ./partials/_header %>
 <body>
   <header>
-
   </header>
 
-<form method="POST" action="/urls/<% key %>/delete">
+
+
   <% for (var key in urls) { %>
-   <li> Long URLs : <%= urls[key] %> Short URLs : <%= key %> <button>Delete</button></li>
-
-
-    <% } %></form>
-
-    <li><a href="">Do you want to shorten your URL? Click me</a></li>
 
 
 
+
+   <li> Long URLs : <a href="<%= urls[key] %>"><%= urls[key] %></a>
+
+    Short URLs : <%= key %>
+
+    <form method = "GET" action = "/urls/<%= key %>/">
+      <button type = "submit" value="Update" class="btn btn-default">Update</button>
+    </form>
+
+    <form method="POST" action="/urls/<%= key %>/delete">
+      <button type="submit" value="delete" name="<%= key %>" class="btn btn-danger"> Delete Me! </button>
+      </form>
+      </li>
+
+    <% } %>
+
+    <li><a href="/urls/new" class="btn btn-primary">Do you want to shorten your URL? Click me</a></li>
 
 
 </body>
