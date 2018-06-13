@@ -2,3 +2,24 @@
 <head>
   <title>TinyPerson</title>
 </head>
+<% if(!username){ %>
+<form method="POST" action="/login"style="margin:25px;">
+
+ <input id="username" type="text" name="username" value="" placeholder="Please Enter Your Username" style="width: 300px">
+
+      <input type="submit" value="Login">
+
+</form>
+
+ <% } else{ %>
+ <li style="display: flex;">
+<h3> Hello <%= username %> , Welcome to TinyApp </h3>
+
+<form method="POST" action="/logout"style="margin:25px;">
+
+<button style="display: flex"type="submit" value="logout" name="<%= username %>" class="btn btn-danger"> Logout! </button>
+</li>
+</form>
+
+
+<% } %>

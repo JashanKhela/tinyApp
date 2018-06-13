@@ -7,8 +7,12 @@ app.set('view engine', 'ejs');
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
+//require the COOKIES parser
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
 
 
+//define a starting object to hold your string
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -18,7 +22,8 @@ const urlDatabase = {
 
 //get method for urls/
 app.get('/urls',function(req , res){
-    let templateVars = { urls : urlDatabase } ;
+    let templateVars = { urls : urlDatabase,
+        username: req.cookies["username"], } ;
     res.render('urls_index' , templateVars )
 });
 
@@ -45,7 +50,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
 
 
-
+//After you submit a new URL, get redirected back to home page
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
   res.redirect('/urls')
@@ -55,18 +60,19 @@ app.get("/urls/new", (req, res) => {
 //get method for urls/:id
 app.get("/urls/:id", (req, res) => {
   let templateVars = { shortURL: req.params.id,
-                        longURL: urlDatabase[req.params.id] };
+                        longURL: urlDatabase[req.params.id],
+                        username: req.cookies["username"],};
   res.render("urls_show", templateVars);
 });
 
-
+//Use the short URL to be redirected to the longURL
 app.get("/u/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL]
   res.redirect(longURL);
 });
 
 
-//A function for returning a random ID
+//A function for returning a random ID to be used for your NEW shortURL
 function generateRandomString() {
   var id = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -81,25 +87,39 @@ function generateRandomString() {
 app.get("/urls/:id/", (req , res) => {
     let templateVars = {
         shortURL: req.params.id,
-        longURL: urlDatabase[req.params.id]
+        longURL: urlDatabase[req.params.id],
+        username: req.cookies["username"],
     };
-
     res.render("urls_show", templateVars)
 
 })
 
-
-
-
+//Update your URLs and get redirected back to the main Page
 app.post("/urls/:id/", (req , res) => {
     console.log(req.params.id)
 
     urlDatabase[req.params.id] = req.body.longURL
-    console.log(urlDatabase)
-
     res.redirect('/urls')
 
 })
+
+
+//This method is to collect the username and store as a cookie
+app.post("/login" , function (req, res) {
+    let username = req.body.username
+    res.cookie('username' , username)
+    res.redirect('/urls')
+
+})
+
+//Logout Method and Clear Cookies
+app.post('/logout' , function(req , res){
+    res.clearCookie('username',);
+    res.redirect('/urls')
+
+
+})
+
 
 
 //make sure you are listening
