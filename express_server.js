@@ -39,10 +39,28 @@ const users = {
 
 //get method for urls/
 app.get('/urls',function(req , res){
-    let templateVars = { urls : urlDatabase,
-        username: req.cookies["username"], } ;
+    const user_id = req.cookies.user_id
+    const user_object = checkForUsersInDB(user_id)
+
+    let templateVars = {
+            user : user_object,
+         urls : urlDatabase } ;
     res.render('urls_index' , templateVars )
 });
+
+
+function checkForUsersInDB(userid) {
+
+        for (var item in users) {
+            console.log(users[item])
+            if (users[item].id === userid ) {
+                return users[item]
+            }
+        }
+    }
+
+
+
 
 //POST method WITH A NEW RANDOM STRING
 app.post("/urls", (req, res) => {
@@ -67,19 +85,26 @@ app.post("/urls/:id/delete", (req, res) => {
 
 //After you submit a new URL, get redirected back to home page
 app.get("/urls/new", (req, res) => {
+    const user_id = req.cookies.user_id
+    const user_object = checkForUsersInDB(user_id)
 
   let templateVars = { shortURL: req.params.id,
                         longURL: urlDatabase[req.params.id],
-                        username: req.cookies["username"],};
+                        user : user_object,
+                        };
   res.render("urls_new", templateVars);
 });
 
 
 //get method for urls/:id
 app.get("/urls/:id", (req, res) => {
+    const user_id = req.cookies.user_id
+    const user_object = checkForUsersInDB(user_id)
+
   let templateVars = { shortURL: req.params.id,
                         longURL: urlDatabase[req.params.id],
-                        username: req.cookies["username"],};
+                        user : user_object,
+                        };
   res.render("urls_show", templateVars);
 });
 
@@ -103,17 +128,20 @@ function generateRandomString() {
 
 //GET method to show previous values on your update page
 app.get("/urls/:id/", (req , res) => {
+    const user_id = req.cookies.user_id
+    const user_object = checkForUsersInDB(user_id)
+
     let templateVars = {
         shortURL: req.params.id,
         longURL: urlDatabase[req.params.id],
-        username: req.cookies["username"],
+        user : user_object,
     };
     res.render("urls_show", templateVars);
 })
 
 //Update your URLs and get redirected back to the main Page
 app.post("/urls/:id/", (req , res) => {
-    console.log(req.params.id)
+
 
     urlDatabase[req.params.id] = req.body.longURL
     res.redirect('/urls')
@@ -122,30 +150,77 @@ app.post("/urls/:id/", (req , res) => {
 
 //This is the Get / login endpoint
 app.get('/login', function(req , res){
-    let templateVars = users ;
-    console.log(templateVars)
-    res.render('urls_login' , users  )
+    const user_id = req.cookies.user_id
+    const user_object = checkForUsersInDB(user_id)
+
+
+    let templateVars = { shortURL: req.params.id,
+                        longURL: urlDatabase[req.params.id],
+                        user : user_object
+                        };
+    res.render('urls_login' , templateVars   )
+
 })
 
+
+
+
+
+function ExsistingPassword(user,password ){
+    if(password === user.password) {
+        return true
+    }
+    return false
+}
 
 
 //This method is to collect the username and store as a cookie
 app.post("/login" , function (req, res) {
-    let username = req.body.username
-    res.cookie('username' , username)
+    let userEmail = req.body.email
+    let userPassword = req.body.password
+    let user = {
+
+    }
+
+    for(var item in users) {
+        if(users[item].email === req.body.email ) {
+            user = users[item]
+        }
+    }
+
+   if(ExsistingPassword(user, userPassword)){
+    res.cookie('user_id' , user.id)
     res.redirect('/urls')
+
+   } else {
+    res.render('urls_login' , { error : 'Status Code 403'})
+   }
+
+
 })
+
+//Check to see if email exist
+function checkExistingEmail(email) {
+        for(var item in user) {
+        if(user[item].email === userEmail) {
+            var existingUser = user[item]
+        }
+        return existingUser
+    }
+
+}
+
+
 
 //Logout Method and Clear Cookies
 app.post('/logout' , function(req , res){
-    res.clearCookie('username',);
+    res.clearCookie('user_id',);
     res.redirect('/urls')
 })
 
 //Go to User Creation Page
 app.get('/register', function(req , res){
     let templateVars = users ;
-    console.log(templateVars)
     res.render('urls_register' , users  )
 })
 
@@ -154,7 +229,8 @@ app.post('/register', function(req , res){
     const newUserID = generateRandomID();
     const NewEmail = req.body.email;
     const NewPassword = req.body.password ;
-    res.cookie('username' , newUserID)
+
+
     let valid = errorCheck(newUserID , NewEmail , NewPassword);
     if(valid) {
     const newUser = {
@@ -163,12 +239,13 @@ app.post('/register', function(req , res){
         password: req.body.password
     }
     users[newUserID] = newUser;
-    res.cookie('username' , newUserID)
+    res.cookie('user_id' , newUserID)
     res.redirect('/urls')
     } else {
         res.render('urls_register' , { error : 'Status Code 404'})
     }
 })
+
 
 //UniqueIDforUsers
 function generateRandomID() {

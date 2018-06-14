@@ -2,12 +2,11 @@
 <head>
   <title>TinyPerson</title>
 </head>
-<% if(!username){ %>
+<% if(!user){ %>
 <form method="POST" action="/login"style="margin:25px;">
 
- <input id="username" type="text" name="username" value="" placeholder="Please Enter Your Username" style="width: 300px">
-
-      <input type="submit" value="Login">
+<li><a href="/login" class="btn btn-primary">Login</a></li>
+<li><a href="/Register" class="btn btn-primary">New? Register Here</a></li>
 
 </form>
 
@@ -15,11 +14,11 @@
 
 
  <li style="display: flex;">
-<h3> Hello <%= username %> , Welcome to TinyApp </h3>
+<h3> Hello <%= user.email %> , Welcome to TinyApp </h3>
 
 <form method="POST" action="/logout"style="margin:25px;">
 
-<button style="display: flex"type="submit" value="logout" name="<%= username %>" class="btn btn-danger"> Logout! </button>
+<button style="display: flex"type="submit" value="logout" name="<%= user.email %>" class="btn btn-danger"> Logout! </button>
 </li>
 </form>
 
