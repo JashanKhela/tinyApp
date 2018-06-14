@@ -5,7 +5,11 @@
   <body style="font-size:20px; padding:50px;">
 
 
-
+      <% if (locals.error) { %>
+        <p class="alert alert-danger">
+          <%= error %>
+        </p>
+      <% } %>
 <label for="Register" ">Please provide an email and password</label>
     <form action="" method="POST" style="margin:25px;">
 

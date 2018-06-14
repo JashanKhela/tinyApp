@@ -120,6 +120,15 @@ app.post("/urls/:id/", (req , res) => {
 })
 
 
+//This is the Get / login endpoint
+app.get('/login', function(req , res){
+    let templateVars = users ;
+    console.log(templateVars)
+    res.render('urls_login' , users  )
+})
+
+
+
 //This method is to collect the username and store as a cookie
 app.post("/login" , function (req, res) {
     let username = req.body.username
@@ -135,12 +144,19 @@ app.post('/logout' , function(req , res){
 
 //Go to User Creation Page
 app.get('/register', function(req , res){
-    res.render('urls_register')
+    let templateVars = users ;
+    console.log(templateVars)
+    res.render('urls_register' , users  )
 })
 
 //POST for /register
 app.post('/register', function(req , res){
     const newUserID = generateRandomID();
+    const NewEmail = req.body.email;
+    const NewPassword = req.body.password ;
+    res.cookie('username' , newUserID)
+    let valid = errorCheck(newUserID , NewEmail , NewPassword);
+    if(valid) {
     const newUser = {
         id: newUserID,
         email: req.body.email,
@@ -148,9 +164,10 @@ app.post('/register', function(req , res){
     }
     users[newUserID] = newUser;
     res.cookie('username' , newUserID)
-    console.log(users)
-    // let user_ID = res.cookie('username' , newUserID)
     res.redirect('/urls')
+    } else {
+        res.render('urls_register' , { error : 'Status Code 404'})
+    }
 })
 
 //UniqueIDforUsers
@@ -163,8 +180,25 @@ function generateRandomID() {
 
   return id;
 }
+//Check to see if the fields are populated
+function errorCheck(newUserID , NewEmail , NewPassword){
+  if (NewEmail.length > 0 && NewPassword.length > 0 && checkExistingEmail(NewEmail)) {
 
-
+    return true;
+  }
+  return false;
+}
+//Check to see if the email already exists
+function checkExistingEmail(email){
+let valid = true;
+    for (let key in users){
+        if(users[key].email === email){
+            valid = false
+        }
+        // return true
+    }
+    return valid
+}
 
 //make sure you are listening
 app.listen(8080);
