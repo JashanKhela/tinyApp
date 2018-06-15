@@ -12,17 +12,29 @@ var cookieParser = require('cookie-parser')
 app.use(cookieParser())
 
 
-//DATAPOOL FOR URLS
+// DATAPOOL FOR URLS
 const urlDatabase = {
+
   "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "9sm5xK": "http://www.google.com",
+
+};
+
+const urlDatabase1 = {
+
+  "b2xVn2": { user_id : "acbc1",
+            url : "http://www.lighthouselabs.ca",  },
+
+  "9sm5xK": { user_id : "asdf3",
+            url :"http://www.google.com"
+}
 };
 //DATAPOOL FOR USERS
 const users = {
   "acbc1": {
     id: "acbc1",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    password: "purple"
   },
  "zxcv2": {
     id: "zxcv2",
@@ -36,30 +48,46 @@ const users = {
   }
 }
 
+function urlsForUsers(id){
+    const userUrl = {}
+    for(let item in urlDatabase1){
+        if(urlDatabase1[item].user_id === id){
+            userUrl[item] = urlDatabase1[item].url ;
+        }
+    }
+    console.log(userUrl );
+    return userUrl ;
+}
 
 //get method for urls/
 app.get('/urls',function(req , res){
-    const user_id = req.cookies.user_id
-    const user_object = checkForUsersInDB(user_id)
-
+    const user_id = req.cookies.user_id ;
+    const user_object = checkForUsersInDB(user_id) ;
+    const userURLs = urlsForUsers(user_id)
     let templateVars = {
+            urls : userURLs,
             user : user_object,
-         urls : urlDatabase } ;
+         //urls : urlDatabase1
+     } ;
     res.render('urls_index' , templateVars )
 });
 
 
-function checkForUsersInDB(userid) {
+app.get('/urls.json',function(req , res){
+    return res.json(urlDatabase1);
+});
 
-        for (var item in users) {
-            console.log(users[item])
-            if (users[item].id === userid ) {
-                return users[item]
-            }
+
+function checkForUsersInDB(userid) {
+    const user = {}
+    for (var item in users) {
+        console.log(users[item])
+        if (users[item].id === userid ) {
+            return users[item]
         }
     }
-
-
+    return user ;
+}
 
 
 //POST method WITH A NEW RANDOM STRING
@@ -83,11 +111,22 @@ app.post("/urls/:id/delete", (req, res) => {
 
 
 
+function ensureLoggedIn(req, res, next) {
+  const userId = req.cookies.user_id
+
+  if (userId) {
+    res.locals.user = users[userId];
+    res.locals.urls = urlDatabase;
+    return next();
+  }
+  return res.redirect('/login');
+}
+
 //After you submit a new URL, get redirected back to home page
-app.get("/urls/new", (req, res) => {
+app.get("/urls/new",ensureLoggedIn, (req, res) => {
     const user_id = req.cookies.user_id
     const user_object = checkForUsersInDB(user_id)
-
+    // const {user} = res.locals;
   let templateVars = { shortURL: req.params.id,
                         longURL: urlDatabase[req.params.id],
                         user : user_object,

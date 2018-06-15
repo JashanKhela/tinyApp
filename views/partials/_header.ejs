@@ -2,7 +2,7 @@
 <head>
   <title>TinyPerson</title>
 </head>
-<% if(!user){ %>
+<% if(!user.id){ %>
 <form method="POST" action="/login"style="margin:25px;">
 
 <li><a href="/login" class="btn btn-primary">Login</a></li>
@@ -24,3 +24,4 @@
 
 
 <% } %>
+

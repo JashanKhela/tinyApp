@@ -4,23 +4,21 @@
   <header>
   </header>
 
-
-
-  <% for (var key in urls) { %>
-
+  <% for (var item in urls) { %>
 
 
 
-   <li style="display: flex;"> Long URLs : <a href="<%= urls[key] %>"><%= urls[key] %></a>
+    <li style="display: flex;"> Long URLs :  <a href="<%= urls[item] %>"><%= urls[item] %> </a>
+   <li style="display: flex;"> Short URLs :  <a href="<%= item %>"><%= item %> </a>
 
-    Short URLs : <%= key %>
 
-    <form method = "GET" action = "/urls/<%= key %>/">
+
+    <form method = "GET" action = "/urls/<%= item %>/">
       <button type = "submit" value="Update" class="btn btn-default">Update</button>
     </form>
 
-    <form method="POST" action="/urls/<%= key %>/delete">
-      <button type="submit" value="delete" name="<%= key %>" class="btn btn-danger"> Delete Me! </button>
+    <form method="POST" action="/urls/<%= item %>/delete">
+      <button type="submit" value="delete" name="<%= item %>" class="btn btn-danger"> Delete Me! </button>
       </form>
       </li>
 
