@@ -7,13 +7,13 @@ const bcrypt = require('bcrypt');
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 //require the COOKIES parser
-var cookieSession = require('cookie-session') ;
+const cookieSession = require('cookie-session') ;
 //use the cookiesession
 app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2']
 }))
-
+//DATAPOOL FOR URLs
 const urlDatabase1 = {
   "b2xVn2": { user_id : "acbc1",
             url : "http://www.lighthouselabs.ca",  },
@@ -120,13 +120,15 @@ app.get('/login', function(req , res){
 app.post("/login" , function (req, res) {
   let userEmail = req.body.email ;
   let userPassword = req.body.password ;
-  var user = {} ;
-  for(var userId in users) {
+  let user;
+  for(let userId in users) {
     if(users[userId].email === req.body.email) {
       user = users[userId] ;
     }
   }
   if(user){
+    console.log(userPassword);
+    console.dir(user, { colors: true });
     if(bcrypt.compareSync(userPassword , user.hashedPassword)){
       req.session.user_id = user.id ;
       res.redirect('/urls') ;
@@ -177,45 +179,6 @@ app.post("/urls/:id/", (req , res) => {
   res.redirect('/urls') ;
 })
 
-
-
-
-
-
-
-
-// //This method is to collect the username and store as a cookie
-// app.post("/login" , function (req, res) {
-//   let userEmail = req.body.email ;
-//   let userPassword = req.body.password ;
-//   var user = {} ;
-//   for(var userId in users) {
-//     if(users[userId].email === req.body.email) {
-//       user = users[userId] ;
-//     }
-//   }
-//   if(user && bcrypt.compareSync(userPassword , user.hashedPassword)) {
-//     req.session.user_id = user.id ;
-//      res.redirect('/urls') ;
-//     }
-//     else {
-//       res.status(403).send('Invalid Login , Check your login info') ;
-//     }
-// })
-
-// //Logout Method and Clear Cookies
-// app.post('/logout' , function(req , res){
-//   req.session = null ;
-//   res.redirect('/urls') ;
-// })
-
-
-// //Go to User Creation Page
-// app.get('/register', function(req , res){
-//   let templateVars = users;
-//   res.render('urls_register' , users  )
-// })
-
 //POST for /register
 app.post('/register', function(req , res){
   const newUserID = generateRandomID();
@@ -240,9 +203,9 @@ app.post('/register', function(req , res){
 //Check to see if users exist in database
 function checkForUsersInDB(userid) {
   const user = {};
-  for (var item in users) {
-    if (users[item].id === userid ) {
-      return users[item] ;
+  for (let existingUser in users) {
+    if (users[existingUser].id === userid ) {
+      return users[existingUser] ;
     }
   }
   return user ;
@@ -250,9 +213,9 @@ function checkForUsersInDB(userid) {
 //Function to store URL for users
 function urlsForUsers(id){
   const userUrl = {} ;
-  for(let item in urlDatabase1){
-    if(urlDatabase1[item].user_id === id){
-      userUrl[item] = urlDatabase1[item].url ;
+  for(let existingURL in urlDatabase1){
+    if(urlDatabase1[existingURL].user_id === id){
+      userUrl[existingURL] = urlDatabase1[existingURL].url ;
     }
   }
   return userUrl ;
@@ -269,17 +232,17 @@ function ensureLoggedIn(req, res, next) {
 }
 //A function for returning a random ID to be used for your NEW shortURL
 function generateRandomString() {
-  var id = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (var i = 0; i < 6; i++)
+  let id = "";
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < 6; i++)
     id += possible.charAt(Math.floor(Math.random() * possible.length));
   return id;
 }
 //Check to see if email exist
 function checkExistingEmail(email) {
-  for(var item in user) {
-    if(user[item].email === userEmail) {
-      var existingUser = user[item];
+  for(let email in user) {
+    if(user[email].email === userEmail) {
+      let existingUser = user[email];
     }
   return existingUser;
     }

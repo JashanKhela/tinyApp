@@ -1,27 +1,40 @@
-
-<head>
-  <title>TinyPerson</title>
-</head>
-<% if(!user.id){ %>
-<form method="POST" action="/login"style="margin:25px;">
-
-<li><a href="/login" class="btn btn-primary">Login</a></li>
-<li><a href="/register" class="btn btn-primary">New? Register Here</a></li>
-
-</form>
+<html>
+  <head>
+    <title>TinyPerson</title>
+  </head>
+  <% if(!user.id){ %>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">TinyApp</a>
+        </div>
+      <form method="POST" action="/login"style="margin:25px;">
+      <ul class="list-group">
+        <li class="list-group-item"><a href="/login" class="btn btn-primary">Login To Your Account</a></form></li>
+        <li class="list-group-item"><a href="/register" class="btn btn-primary">New? Register Here</a></li>
+      </ul>
+      </form>
+    </div>
+  </nav>
 
  <% } else{ %>
 
+  <nav class="navbar navbar-default">
 
- <li style="display: flex;">
-<h3> Hello <%= user.email %> , Welcome to TinyApp </h3>
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Welcome To Tiny App , Lets Shorten Some URLs</a>
 
-<form method="POST" action="/logout"style="margin:25px;">
+      </div>
 
-<button style="display: flex"type="submit" value="logout" name="<%= user.email %>" class="btn btn-danger"> Logout! </button>
-</li>
-</form>
+      <li style="display: flex;">
+        <form method="POST" action="/logout"style="margin:25px;">
+        <button style="display: flex; margin-left:600px;"type="submit" value="logout" name="<%= user.email %>" class="btn btn-primary"> Logout! </button>
+        </form>
+      </li>
+    </div>
 
-
+  </nav>
+</html>
 <% } %>
 

@@ -1,25 +1,25 @@
 <html lang="en">
   <head>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
   </head>
-  <body style="font-size:20px; padding:50px;">
-
-<h1> Register form </h1>
-
-        <p class="alert alert-danger">
-
-        </p>
-
-<label for="/register" ">Please provide an email and password</label>
-    <form action="/register" method="POST" style="margin:25px;">
-
-      <input id="email" type="email" name="email" value="" placeholder="JohnDoe@hotmail.com" style="width: 200px">
-      <input id="password" type="password" name="password" placeholder="Enter a password" style="width: 200px">
-
-      <input type="submit" value="Submit">
-
-    </form>
-
-  </body>
-
+  <div class="container" >
+    <h4 for="Login" >Lets Get You Set Up</h4>
+    <body style="font-size:15px; padding:200px; margin-top: 150px ; margin-left: 600px">
+      <label for="/register">Please provide an email and password</label>
+      <form action="/register" method="POST" style="">
+        <div class="form-group">
+          <input id="email" type="email" name="email" value="" placeholder="JohnDoe@hotmail.com" style="width: 200px">
+        </div>
+        <div class="form-group">
+          <input id="password" type="password" name="password" placeholder="Enter a password" style="width: 200px">
+        </div>
+        <input type="submit" value="Submit">
+      </form>
+    </body>
+  </div>
 </html>
