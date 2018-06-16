@@ -6,11 +6,8 @@
 
   <% for (var item in urls) { %>
 
-
-
     <li style="display: flex;"> Long URLs :  <a href="<%= urls[item] %>"><%= urls[item] %> </a>
-   <li style="display: flex;"> Short URLs :  <a href="<%= item %>"><%= item %> </a>
-
+   <li style="display: flex;"> Short URLs :  <a href="<%= urls[item] %>"><%= item %> </a>
 
 
     <form method = "GET" action = "/urls/<%= item %>/">

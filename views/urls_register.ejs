@@ -4,17 +4,17 @@
   </head>
   <body style="font-size:20px; padding:50px;">
 
+<h1> Register form </h1>
 
-      <% if (locals.error) { %>
         <p class="alert alert-danger">
-          <%= error %>
-        </p>
-      <% } %>
-<label for="Register" ">Please provide an email and password</label>
-    <form action="" method="POST" style="margin:25px;">
 
-      <input id="username" type="email" name="email" value="" placeholder="JohnDoe@hotmail.com" style="width: 200px">
-      <input id="longURL" type="password" name="password" placeholder="Enter a password" style="width: 200px">
+        </p>
+
+<label for="/register" ">Please provide an email and password</label>
+    <form action="/register" method="POST" style="margin:25px;">
+
+      <input id="email" type="email" name="email" value="" placeholder="JohnDoe@hotmail.com" style="width: 200px">
+      <input id="password" type="password" name="password" placeholder="Enter a password" style="width: 200px">
 
       <input type="submit" value="Submit">
 

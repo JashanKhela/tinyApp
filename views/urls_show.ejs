@@ -10,7 +10,7 @@
   <label for="longURL" ">ShortURL : <%=shortURL %> </label>
 </h1>
 
-      <input id="longURL" type="text" name="longURL" value="<%= longURL %>" placeholder="http://" style="width: 300px">
+      <input id="longURL" type="text" name="longURL" value="<%=longURL['url'] %>" placeholder="http://" style="width: 300px">
 
       <input type="submit" value="Update">
 
