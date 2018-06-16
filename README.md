@@ -2,6 +2,11 @@
 TinyApp is a fullstack web application built with Node and Express to help users shorten their URLs.
 
 ## Final Product
+!["Screenshot of Home Page"](https://github.com/JashanKhela/tinyApp/blob/master/docs/HomePage.png?raw=true)
+!["Screenshot of User Page"](https://github.com/JashanKhela/tinyApp/blob/master/docs/UserPage.png?raw=true)
+!["Screenshot of New URL PAge"](https://github.com/JashanKhela/tinyApp/blob/master/docs/NewLinkPage.png?raw=true)
+!["Screenshot of Login Form"](https://github.com/JashanKhela/tinyApp/blob/master/docs/LoginPage.png?raw=true)
+
 
 ## Dependencies
 
