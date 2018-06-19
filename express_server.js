@@ -26,23 +26,27 @@ const users = {
   "acbc1": {
     id: "acbc1",
     email: "user@example.com",
-    password: "purple",
+    
     hashedPassword : bcrypt.hashSync("purple", 10)
   },
  "zxcv2": {
     id: "zxcv2",
     email: "user2@example.com",
-    password: "dishwasher-funk",
+    
     hashedPassword : bcrypt.hashSync("dishwasher-funk", 10)
 
   },
   "asdf3": {
     id: "asdf3",
     email: "MrT@gmail.com",
-    password : "fluffy",
+    
     hashedPassword : bcrypt.hashSync("fluffy", 10)
   }
 }
+
+app.get('/',function(req , res){
+res.redirect('/login') ;
+});
 
 //get method for urls/
 app.get('/urls',function(req , res){
@@ -127,7 +131,7 @@ app.post("/login" , function (req, res) {
     }
   }
   if(user){
-    console.log(userPassword);
+    
     console.dir(user, { colors: true });
     if(bcrypt.compareSync(userPassword , user.hashedPassword)){
       req.session.user_id = user.id ;
@@ -190,7 +194,6 @@ app.post('/register', function(req , res){
       const newUser = {
       id: newUserID,
         email: req.body.email,
-        password: req.body.password,
         hashedPassword : hashedPassword
     }
   users[newUserID] = newUser;
